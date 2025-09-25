@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
+
 # ==========================
 # Admin Commands
 # ==========================
@@ -89,4 +90,25 @@ class UserCommands(commands.Cog):
 class BoostBot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
-        super().__init__(command_prefix="!",
+        super().__init__(command_prefix="!", intents=intents)
+
+    async def setup_hook(self):
+        await self.add_cog(AdminCommands(self))
+        await self.add_cog(UserCommands(self))
+        await self.tree.sync()
+        print("✅ Commands synced!")
+
+    async def on_ready(self):
+        print(f"🤖 Logged in as {self.user} ({self.user.id})")
+
+
+# ==========================
+# Run Bot
+# ==========================
+if __name__ == "__main__":
+    TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+    if not TOKEN:
+        raise ValueError("❌ DISCORD_BOT_TOKEN not set in environment!")
+    bot = BoostBot()
+    bot.run(TOKEN)
+
