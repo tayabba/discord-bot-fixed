@@ -83,6 +83,11 @@ class UserCommands(commands.Cog):
     async def stock(self, interaction: discord.Interaction):
         await interaction.response.send_message("📦 Current stock status goes here")
 
+git add runtime.txt
+git commit -m "Pin Python version to 3.12.6"
+git push
+
+
 
 # ==========================
 # Bot Class
