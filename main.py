@@ -82,7 +82,7 @@ class UserCommands(commands.Cog):
     @app_commands.command(name="stock", description="Check stock")
     async def stock(self, interaction: discord.Interaction):
         await interaction.response.send_message("📦 Current stock status goes here")
-        
+
 
 # ==========================
 # Bot Class
@@ -90,11 +90,15 @@ class UserCommands(commands.Cog):
 class BoostBot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
+        intents.message_content = True  # ✅ Important for reading user messages
         super().__init__(command_prefix="!", intents=intents)
 
     async def setup_hook(self):
+        # Register cogs
         await self.add_cog(AdminCommands(self))
         await self.add_cog(UserCommands(self))
+
+        # Sync slash commands
         await self.tree.sync()
         print("✅ Commands synced!")
 
@@ -111,4 +115,5 @@ if __name__ == "__main__":
         raise ValueError("❌ DISCORD_BOT_TOKEN not set in environment!")
     bot = BoostBot()
     bot.run(TOKEN)
+
 
